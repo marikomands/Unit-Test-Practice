@@ -12,7 +12,7 @@ afterEach(() => {
   jest.resetAllMocks();
 });
 
-test("成功時の表示", async () => {
+test("feching scceeded", async () => {
   fetch.mockImplementation(successFetch);
   render(<TaskLoader />);
   expect(await screen.findByText("Mocked Task")).toBeInTheDocument();
@@ -20,7 +20,7 @@ test("成功時の表示", async () => {
   expect(screen.getByText("Cook Dinner")).toBeInTheDocument();
 });
 // mockimplementation ha jext.fn(0が呼ばれた時にしてほしい内容)
-test("失敗時の表示", async () => {
+test("feching failed", async () => {
   fetch.mockImplementation(errorFetch);
   render(<TaskLoader />);
   expect(await screen.findByRole("alert")).toHaveTextContent("Failed to fetch");
