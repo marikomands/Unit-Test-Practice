@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
-import ParentComponentOfButton from "../src/Button/ParentComponentOfButton";
+import ParentComponentOfButton from "../src/button/ParentComponentOfButton";
 
 test("renders with label", async () => {
   render(<ParentComponentOfButton />);
