@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UserProfile from "./UserProfileAxiosWithRoute";
-import SaveSuccess from "./SaveSuccess";
-import SaveError from "./SaveError";
+import SaveSuccess from "./SaveSuccessWithoutuseLocation";
+import SaveError from "./SaveErrorWithoutUseLocation";
 
 function App() {
   return (

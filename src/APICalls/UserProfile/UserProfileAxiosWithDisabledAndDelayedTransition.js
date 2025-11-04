@@ -1,21 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {
-  mockUserSaveSucceedResponse,
-  mockSaveErrorNotes,
-} from "../../../_mocks_/UserProfileAxiosWithRoute";
+import { SaveSuccess } from "./SaveSuccessWithUserLocation";
 
 function UserProfile() {
   const [user, setUser] = useState(null);
+  const [notes, setNotes] = useState("");
   const [fetchError, setFetchError] = useState(null);
   const [fetchStatus, setfetchStatus] = useState(null);
-  const [notes, setNotes] = useState("");
-  //   const [saveError, setSaveError] = useState(null);
-  //   const [saveStatus, setSaveStatus] = useState(null);
-  // const [errorStatus, setErrorStatus] = useState(null);
-
-  //   const [saveMessage, setSaveMessage] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
 
   const navigate = useNavigate();
 
@@ -24,7 +17,7 @@ function UserProfile() {
       try {
         const response = await axios.get("/api/user");
         setUser(response.data);
-        setFetchError(null); // 成功時はエラーをクリア
+        setFetchError(null);
       } catch (err) {
         const errorMessage =
           err?.response?.data?.message ||
@@ -39,24 +32,28 @@ function UserProfile() {
   }, []);
 
   const saveNotes = async () => {
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    setIsSaving(true);
     try {
       const response = await axios.post("/api/save", {
         ...user,
         notes,
       });
       setUser(response.data);
-      //   setSaveMessage(response.data.message || "Saved successfully!");
-      //   setSaveError(null); // 成功時は保存エラーをクリア
+
+      await delay(1000);
+      // setTimeout(() => {
+      console.log("Navigating to success with message:", response.data.message);
       navigate("/success", { state: { message: response.data.message } });
+      console.log("navigating");
+      // setIsSaving(false);
+      // }, 1000); // 1秒後に遷移
     } catch (err) {
-      //   const errorMessage = err?.response?.data?.message || "Failed to Save";
-      //   setSaveError(errorMessage);
-      //   const errorStatus = err?.response?.status;
-      //   setSaveStatus(errorStatus);
-      //   console.log("Saved error:", errorStatus);
-      //   setSaveMessage(""); // 失敗時は成功メッセージをクリア
-      console.log("Save error:", err?.response?.status);
-      navigate("/error");
+      await delay(1000);
+      navigate("/error", {
+        state: { message: err?.response?.data?.message },
+      });
+      // setIsSaving(false);
     }
   };
 
@@ -73,7 +70,7 @@ function UserProfile() {
       {fetchError ? (
         <>
           <p style={{ color: "red" }}>{fetchError}</p>
-          <p style={{ color: "red" }}>Error Status: {fetchStatus} </p>
+          <p style={{ color: "red" }}>Error Status: {fetchStatus}</p>
         </>
       ) : !user ? (
         <p>Loading...</p>
@@ -92,26 +89,10 @@ function UserProfile() {
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Add notes about this user..."
           />
-
-          <button onClick={saveNotes}>Save Notes</button>
-          {/* 
-          {saveMessage ? (
-            <p style={{ color: "green" }}>{saveMessage}</p>
-          ) : saveError ? (
-            <>
-              <p style={{ color: "red" }}>{saveError}</p>
-              {saveStatus && (
-                <p style={{ color: "red" }}>Error Status: {saveStatus}</p>
-              )}
-            </>
-          ) : null} */}
-
-          {/* {saveMessage && <p style={{ color: "green" }}>{saveMessage}</p>}
-
-          {saveError && <p style={{ color: "red" }}>{saveError}</p>}
-          {errorStatus && (
-            <p style={{ color: "red" }}>Error Status: {saveStatus}</p>
-          )} */}
+          {/* Disable button while saving or no notes are present */}
+          <button onClick={saveNotes} disabled={isSaving || !notes}>
+            {isSaving ? "Saving..." : "Save Notes"}
+          </button>
         </>
       )}
     </div>

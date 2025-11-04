@@ -9,8 +9,9 @@ const TaskLoader = () => {
     const fetchTasks = async () => {
       try {
         const res = await fetch("/api/tasks");
-        if (!res.ok) throw new Error("Failed to fetch");
+
         const data = await res.json();
+        if (!res.ok) throw new Error(data.message);
         setTasks(data);
       } catch (err) {
         setError(err.message);

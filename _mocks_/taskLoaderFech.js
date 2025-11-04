@@ -8,8 +8,8 @@ export const successFetch = () =>
     ],
   });
 
-export const errorFetch = () =>
+export const errorSave = () =>
   Promise.resolve({
     ok: false,
-    json: async () => ({ message: "Failed to fetch" }),
+    json: async () => ({ message: "Failed to Save" }),
   });

@@ -8,9 +8,10 @@ import {
   mockUserFetchSucceedResponse,
   mockSaveErrorNotes,
 } from "../../_mocks_/UserProfileAxios";
-import SaveSuccess from "../../src/APICalls/UserProfile/SaveSuccess";
-import SaveError from "../../src/APICalls/UserProfile/SaveError";
+import SaveSuccess from "../../src/APICalls/UserProfile/SaveSuccessWithoutuseLocation";
+import SaveError from "../../src/APICalls/UserProfile/SaveErrorWithoutUseLocation";
 import axios from "axios";
+
 // import { act } from "react";
 import "@testing-library/jest-dom";
 
@@ -87,3 +88,26 @@ describe("UserProfileAxiosWithRoutes Component", () => {
     expect(errorMessage).toBeInTheDocument();
   });
 });
+// import { mockSaveErrorNotes } from "../__mocks__/responses";
+// import { useLocation } from "react-router-dom";
+// import { SaveErrorWithoutUseLocation } from "./SaveErrorWithoutUseLocation";
+// import { render, screen } from "@testing-library/react";
+
+// jest.mock("react-router-dom", () => ({
+//   ...jest.requireActual("react-router-dom"),
+//   useLocation: jest.fn(),
+// }));
+
+// test("エラーメッセージが表示されること", () => {
+//   useLocation.mockReturnValue({
+//     state: {
+//       message: mockSaveErrorNotes.response.data.message,
+//     },
+//   });
+
+//   render(<SaveErrorWithoutUseLocation />);
+
+//   expect(
+//     screen.getByText("Failed to save user profile and notes")
+//   ).toBeInTheDocument();
+// });

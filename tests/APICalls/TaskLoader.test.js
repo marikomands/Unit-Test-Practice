@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { successFetch, errorFetch } from "../../_mocks_/taskLoaderFech";
+import { successFetch, errorSave } from "../../_mocks_/taskLoaderFech";
 import TaskLoader from "../../src/TaskLoader";
 
 beforeEach(() => {
@@ -21,8 +21,8 @@ test("feching scceeded", async () => {
 });
 // mockimplementation ha jext.fn(0が呼ばれた時にしてほしい内容)
 test("feching failed", async () => {
-  fetch.mockImplementation(errorFetch);
+  fetch.mockImplementation(errorSave);
   render(<TaskLoader />);
-  expect(await screen.findByRole("alert")).toHaveTextContent("Failed to fetch");
+  expect(await screen.findByRole("alert")).toHaveTextContent("Failed to Save");
   // expect(await screen.findByText("Failed to fetch")).toBeInTheDocument();
 });
